@@ -1,3 +1,6 @@
+## Management System
+Use React Front-End and Node.js Back-End
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
