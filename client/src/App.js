@@ -1,39 +1,15 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import Customer from './components/Customer'
 import {Table, TableHead, TableBody, TableRow, TableCell} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
-const customers = [{
-  'id': 1,
-  'image': 'https://placeimg.com/64/64/1',
-  'name': '홍길동',
-  'birthday': '961222',
-  'gender': '남자',
-  'job': '학생'
-},
-{
-  'id': 2,
-  'image': 'https://placeimg.com/64/64/2',
-  'name': '가길동',
-  'birthday': '961222',
-  'gender': '남자',
-  'job': '학생'
-},
-{
-  'id': 3,
-  'image': 'https://placeimg.com/64/64/3',
-  'name': '무길동',
-  'birthday': '961222',
-  'gender': '남자',
-  'job': '학생'
-}];
 
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: 'auto'
   },
   table: {
@@ -42,6 +18,18 @@ const styles = theme => ({
 })
 const App = (props) => {
   const {classes} = props;
+  const [customers, setCustomers] = useState("");
+
+  useEffect(() => {
+    callApi().then(res => setCustomers(res)).catch(err => console.log(err));
+  }, []);
+
+  const callApi = async() => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+  
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
@@ -57,7 +45,7 @@ const App = (props) => {
         </TableHead>
         <TableBody>
         {
-        customers.map(c => {
+        customers ? customers.map(c => {
           return <Customer
             key={c.id}
             id={c.id}
@@ -67,7 +55,8 @@ const App = (props) => {
             gender={c.gender}
             job={c.job}
           />
-        })
+        }):
+        null
       }
         </TableBody>
       </Table>
